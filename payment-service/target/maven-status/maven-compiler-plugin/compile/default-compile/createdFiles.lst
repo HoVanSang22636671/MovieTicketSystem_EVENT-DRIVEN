@@ -1,0 +1,3 @@
+com\movieticket\payments\config\RabbitConfig.class
+com\movieticket\payments\messaging\BookingCreatedConsumer.class
+com\movieticket\payments\PaymentServiceApplication.class

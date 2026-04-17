@@ -1,0 +1,7 @@
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\config\RabbitConfig.java
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\domain\User.java
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\repo\UserRepository.java
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\UserServiceApplication.java
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\web\AuthController.java
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\web\dto\LoginRequest.java
+D:\HK8-26\KienTruc\movie-ticket\user-service\src\main\java\com\movieticket\users\web\dto\RegisterRequest.java

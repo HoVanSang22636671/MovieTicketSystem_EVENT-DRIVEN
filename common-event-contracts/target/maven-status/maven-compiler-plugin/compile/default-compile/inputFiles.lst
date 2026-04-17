@@ -1,0 +1,6 @@
+D:\HK8-26\KienTruc\movie-ticket\common-event-contracts\src\main\java\com\movieticket\contracts\BookingCreatedEvent.java
+D:\HK8-26\KienTruc\movie-ticket\common-event-contracts\src\main\java\com\movieticket\contracts\BookingFailedEvent.java
+D:\HK8-26\KienTruc\movie-ticket\common-event-contracts\src\main\java\com\movieticket\contracts\EventType.java
+D:\HK8-26\KienTruc\movie-ticket\common-event-contracts\src\main\java\com\movieticket\contracts\PaymentCompletedEvent.java
+D:\HK8-26\KienTruc\movie-ticket\common-event-contracts\src\main\java\com\movieticket\contracts\RabbitConstants.java
+D:\HK8-26\KienTruc\movie-ticket\common-event-contracts\src\main\java\com\movieticket\contracts\UserRegisteredEvent.java
