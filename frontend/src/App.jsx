@@ -15,6 +15,16 @@ export default function App() {
     [movies, selectedMovieId]
   );
 
+  const [newMovieTitle, setNewMovieTitle] = useState('');
+  const [newMovieDescription, setNewMovieDescription] = useState('');
+  const [newMovieDurationMinutes, setNewMovieDurationMinutes] = useState('90');
+  const [newMoviePrice, setNewMoviePrice] = useState('90000');
+
+  const [editMovieTitle, setEditMovieTitle] = useState('');
+  const [editMovieDescription, setEditMovieDescription] = useState('');
+  const [editMovieDurationMinutes, setEditMovieDurationMinutes] = useState('');
+  const [editMoviePrice, setEditMoviePrice] = useState('');
+
   const [seatNumber, setSeatNumber] = useState('A5');
   const [bookings, setBookings] = useState([]);
   const [message, setMessage] = useState('');
@@ -32,10 +42,31 @@ export default function App() {
     setBookings(res.data);
   }
 
+  async function waitForBookingResult(bookingId, maxMs = 6000) {
+    const startedAt = Date.now();
+    while (Date.now() - startedAt < maxMs) {
+      const res = await api.get(`/bookings/${bookingId}`);
+      const status = res.data?.status;
+      if (status && status !== 'PENDING_PAYMENT') {
+        return res.data;
+      }
+      await new Promise((r) => setTimeout(r, 800));
+    }
+    return null;
+  }
+
   useEffect(() => {
     loadMovies().catch((e) => setMessage(e?.message || 'Failed to load movies'));
     loadBookings().catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!selectedMovie) return;
+    setEditMovieTitle(selectedMovie.title || '');
+    setEditMovieDescription(selectedMovie.description || '');
+    setEditMovieDurationMinutes(String(selectedMovie.durationMinutes ?? ''));
+    setEditMoviePrice(String(selectedMovie.price ?? ''));
+  }, [selectedMovieId]);
 
   async function onRegister(e) {
     e.preventDefault();
@@ -86,10 +117,61 @@ export default function App() {
         amount: selectedMovie.price,
       });
 
-      setMessage(`Booking created id=${res.data.id} status=${res.data.status}`);
+      setMessage(`Booking created id=${res.data.id} status=${res.data.status}. Waiting payment result...`);
       await loadBookings();
+
+      const finalBooking = await waitForBookingResult(res.data.id);
+      if (finalBooking) {
+        setMessage(`Booking updated id=${finalBooking.id} status=${finalBooking.status}`);
+        await loadBookings();
+      } else {
+        setMessage(`Booking created id=${res.data.id}. Status will update soon (async). Click Refresh bookings.`);
+      }
     } catch (err) {
       setMessage(err?.response?.data?.message || err?.message || 'Create booking failed');
+    }
+  }
+
+  async function onCreateMovie(e) {
+    e.preventDefault();
+    setMessage('');
+    try {
+      const payload = {
+        title: newMovieTitle,
+        description: newMovieDescription,
+        durationMinutes: Number(newMovieDurationMinutes),
+        price: Number(newMoviePrice),
+      };
+      const res = await api.post('/movies', payload);
+      setMessage(`Movie created id=${res.data.id}`);
+      setNewMovieTitle('');
+      setNewMovieDescription('');
+      await loadMovies();
+      setSelectedMovieId(res.data.id);
+    } catch (err) {
+      setMessage(err?.response?.data?.message || err?.message || 'Create movie failed');
+    }
+  }
+
+  async function onUpdateMovie(e) {
+    e.preventDefault();
+    setMessage('');
+    if (!selectedMovie?.id) {
+      setMessage('Please select a movie to edit');
+      return;
+    }
+    try {
+      const payload = {
+        title: editMovieTitle,
+        description: editMovieDescription,
+        durationMinutes: Number(editMovieDurationMinutes),
+        price: Number(editMoviePrice),
+      };
+      const res = await api.put(`/movies/${selectedMovie.id}`, payload);
+      setMessage(`Movie updated id=${res.data.id}`);
+      await loadMovies();
+    } catch (err) {
+      setMessage(err?.response?.data?.message || err?.message || 'Update movie failed');
     }
   }
 
@@ -140,6 +222,30 @@ export default function App() {
               Selected: {selectedMovie.title} ({selectedMovie.durationMinutes} min) — {selectedMovie.price}
             </div>
           ) : null}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
+          <form onSubmit={onCreateMovie} style={{ padding: 12, border: '1px solid #eee', borderRadius: 8 }}>
+            <h3>Add movie</h3>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <input value={newMovieTitle} onChange={(e) => setNewMovieTitle(e.target.value)} placeholder="title" />
+              <input value={newMovieDescription} onChange={(e) => setNewMovieDescription(e.target.value)} placeholder="description" />
+              <input value={newMovieDurationMinutes} onChange={(e) => setNewMovieDurationMinutes(e.target.value)} placeholder="durationMinutes" />
+              <input value={newMoviePrice} onChange={(e) => setNewMoviePrice(e.target.value)} placeholder="price" />
+              <button type="submit">Create movie</button>
+            </div>
+          </form>
+
+          <form onSubmit={onUpdateMovie} style={{ padding: 12, border: '1px solid #eee', borderRadius: 8 }}>
+            <h3>Edit selected movie</h3>
+            <div style={{ display: 'grid', gap: 8 }}>
+              <input value={editMovieTitle} onChange={(e) => setEditMovieTitle(e.target.value)} placeholder="title" />
+              <input value={editMovieDescription} onChange={(e) => setEditMovieDescription(e.target.value)} placeholder="description" />
+              <input value={editMovieDurationMinutes} onChange={(e) => setEditMovieDurationMinutes(e.target.value)} placeholder="durationMinutes" />
+              <input value={editMoviePrice} onChange={(e) => setEditMoviePrice(e.target.value)} placeholder="price" />
+              <button type="submit" disabled={!selectedMovie}>Save changes</button>
+            </div>
+          </form>
         </div>
       </div>
 

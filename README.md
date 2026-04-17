@@ -3,14 +3,22 @@
 Backend: Spring Boot + MongoDB + RabbitMQ  
 Gateway: Spring Cloud Gateway
 
+Core rule (Event-Driven): Booking does NOT call Payment via REST. Payment flow is handled asynchronously via RabbitMQ events.
+
+EDA guard (recommended before demo):
+
+```powershell
+./scripts/verify-eda.ps1
+```
+
 ## 1) Ports
 
 - Gateway: 8080
 - User Service: 8081
 - Movie Service: 8082
 - Booking Service: 8083
-- Payment Service (worker): 8084
-- Notification Worker: 8086
+- Payment Service (worker): 8084 (no public HTTP API)
+- Notification Worker: 8086 (no public HTTP API)
 - MongoDB: 27017
 - RabbitMQ: 5672
 - RabbitMQ UI: 15672
@@ -116,6 +124,7 @@ Movie:
 
 - GET `/api/movies`
 - POST `/api/movies`
+- PUT `/api/movies/{id}`
 
 Booking:
 
@@ -169,3 +178,28 @@ All services already read Rabbit/Mongo via env vars:
 - `MONGODB_URI`
 
 So when running on multiple machines, set those env vars to the machine hosting Mongo/RabbitMQ.
+
+For a complete 3-machine setup (team-of-3), see: `docs/lan-3machines.md`.
+
+### 7.1) 3 people (3 machines) quickstart
+
+Each person clones the repo and runs only their assigned part:
+
+- Person 1 (Machine 1): infra + gateway + frontend
+  - `docs/person1-frontend-gateway.md`
+- Person 2 (Machine 2): user-service + movie-service
+  - `docs/person2-user-movie.md`
+- Person 3 (Machine 3): booking-service + payment-service(worker) + notification-worker(worker)
+  - `docs/person3-booking-payment-notification.md`
+
+Tip: share IPs first (M1_IP, M2_IP, M3_IP) and open Windows Firewall ports as listed in the guides.
+
+Per-person quick guides:
+
+- `docs/person1-frontend-gateway.md`
+- `docs/person2-user-movie.md`
+- `docs/person3-booking-payment-notification.md`
+
+Database guide:
+
+- `docs/database.md`

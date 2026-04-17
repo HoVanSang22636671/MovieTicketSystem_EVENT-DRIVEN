@@ -61,8 +61,6 @@ services:
     container_name: payment-service
     environment:
       RABBITMQ_HOST: rabbitmq
-    ports:
-      - "8084:8084"
     depends_on:
       - rabbitmq
 
