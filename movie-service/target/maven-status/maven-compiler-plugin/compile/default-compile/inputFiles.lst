@@ -1,0 +1,6 @@
+D:\HK8-26\KienTruc\movie-ticket\movie-service\src\main\java\com\movieticket\movies\domain\Movie.java
+D:\HK8-26\KienTruc\movie-ticket\movie-service\src\main\java\com\movieticket\movies\MovieServiceApplication.java
+D:\HK8-26\KienTruc\movie-ticket\movie-service\src\main\java\com\movieticket\movies\repo\MovieRepository.java
+D:\HK8-26\KienTruc\movie-ticket\movie-service\src\main\java\com\movieticket\movies\seed\MovieSeeder.java
+D:\HK8-26\KienTruc\movie-ticket\movie-service\src\main\java\com\movieticket\movies\web\dto\CreateMovieRequest.java
+D:\HK8-26\KienTruc\movie-ticket\movie-service\src\main\java\com\movieticket\movies\web\MovieController.java

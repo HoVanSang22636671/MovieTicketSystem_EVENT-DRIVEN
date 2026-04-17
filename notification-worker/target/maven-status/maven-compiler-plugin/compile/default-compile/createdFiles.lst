@@ -1,0 +1,3 @@
+com\movieticket\notifications\NotificationWorkerApplication.class
+com\movieticket\notifications\messaging\PaymentNotificationConsumer.class
+com\movieticket\notifications\config\RabbitConfig.class

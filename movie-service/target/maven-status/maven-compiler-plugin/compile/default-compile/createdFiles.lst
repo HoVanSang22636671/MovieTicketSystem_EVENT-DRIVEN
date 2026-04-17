@@ -1,0 +1,6 @@
+com\movieticket\movies\MovieServiceApplication.class
+com\movieticket\movies\web\MovieController.class
+com\movieticket\movies\seed\MovieSeeder.class
+com\movieticket\movies\repo\MovieRepository.class
+com\movieticket\movies\web\dto\CreateMovieRequest.class
+com\movieticket\movies\domain\Movie.class

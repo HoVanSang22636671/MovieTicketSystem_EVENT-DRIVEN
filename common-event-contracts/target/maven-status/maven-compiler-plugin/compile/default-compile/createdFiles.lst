@@ -1,0 +1,6 @@
+com\movieticket\contracts\RabbitConstants.class
+com\movieticket\contracts\EventType.class
+com\movieticket\contracts\BookingCreatedEvent.class
+com\movieticket\contracts\BookingFailedEvent.class
+com\movieticket\contracts\UserRegisteredEvent.class
+com\movieticket\contracts\PaymentCompletedEvent.class
